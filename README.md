@@ -59,3 +59,10 @@ sudo docker run --rm -it --user $(id -u):$(id -g) -v `pwd`:`pwd` -w `pwd` mriffl
 Substitute `/path/to/my_yeast_data.mzid`, `/path/to/yeast.fasta`, and `/path/to/yeast_results.limelight.xml` to your
 actual directories. This will create a file at `/path/to/yeast_results.limelight.xml` with your results formatted
 as Limelight XML.
+
+## Getting Help, Providing Feedback, or Reporting Problems
+If you run into any problems, have any questions, or any ideas for features, please contact us using one of the following methods:
+
+* Try using the [Limelight Issue Page](https://github.com/yeastrc/limelight-core/issues), right here on GitHub.
+* You can [join our Slack](https://join.slack.com/t/limelight-ms/shared_invite/zt-pdkll4k3-YR5km0ppSrtdlZCJBvgVyQ) and chat with us.
+* You can email us at limelightms@uw.edu
