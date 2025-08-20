@@ -21,16 +21,17 @@ package org.yeastrc.limelight.xml.prolucid.main;
 import org.yeastrc.limelight.xml.prolucid.constants.Constants;
 import org.yeastrc.limelight.xml.prolucid.objects.ConversionParameters;
 import org.yeastrc.limelight.xml.prolucid.objects.ConversionProgramInfo;
+import org.yeastrc.limelight.xml.prolucid.utils.Limelight_GetVersion_FromFile_SetInBuildFromEnvironmentVariable;
+
 import picocli.CommandLine;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.List;
 
 @CommandLine.Command(name = "java -jar " + Constants.CONVERSION_PROGRAM_NAME,
 		mixinStandardHelpOptions = true,
-		version = Constants.CONVERSION_PROGRAM_NAME + " " + Constants.CONVERSION_PROGRAM_VERSION,
+		versionProvider = LimelightConverterVersionProvider.class,
 		sortOptions = false,
 		synopsisHeading = "%n",
 		descriptionHeading = "%n@|bold,underline Description:|@%n%n",
@@ -68,8 +69,21 @@ public class MainProgram implements Runnable {
 			System.exit( 1 );
 		}
 
+		ConversionProgramInfo cpi = null;
+		
+		try {
+			cpi = ConversionProgramInfo.createInstance( String.join( " ",  args ) );        
+		} catch(Throwable t) {
 
-		ConversionProgramInfo cpi = ConversionProgramInfo.createInstance( String.join( " ",  args ) );
+			System.err.println("Error running conversion: " + t.getMessage());
+
+			if(verboseRequested) {
+				t.printStackTrace();
+			}
+
+			System.exit(1);
+		}
+
 		ConversionParameters cp = new ConversionParameters(mzidFile, fastaFile, outFile, cpi);
 
 		try {
@@ -107,7 +121,7 @@ public class MainProgram implements Runnable {
 			while ( ( line = br.readLine() ) != null ) {
 
 				line = line.replace( "{{URL}}", Constants.CONVERSION_PROGRAM_URI );
-				line = line.replace( "{{VERSION}}", Constants.CONVERSION_PROGRAM_VERSION );
+				line = line.replace( "{{VERSION}}", Limelight_GetVersion_FromFile_SetInBuildFromEnvironmentVariable.getVersion_FromFile_SetInBuildFromEnvironmentVariable() );
 
 				System.err.println( line );
 				
